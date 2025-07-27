@@ -91,3 +91,30 @@ def run_bot():
     while True:
         schedule.run_pending()
         time.sleep(1)
+
+# === IMAGE TYPE DETECTION USING CUSTOM imghdr ===
+
+def detect_image_type(file_path):
+    try:
+        with open(file_path, 'rb') as f:
+            header = f.read(32)
+
+        if header.startswith(b'\xff\xd8'):
+            return 'jpeg'
+        elif header.startswith(b'\x89PNG'):
+            return 'png'
+        elif header.startswith(b'GIF87a') or header.startswith(b'GIF89a'):
+            return 'gif'
+        elif header.startswith(b'BM'):
+            return 'bmp'
+        else:
+            return 'unknown'
+    except Exception as e:
+        return f"Error: {e}"
+
+# === TEST ONLY: Run this file directly to test image type ===
+if __name__ == "__main__":
+    run_bot()  # Uncomment to test trading bot directly
+    # Optional: Test imghdr
+    # test_file = "your_image.jpg"
+    # print("Detected image type:", detect_image_type(test_file))
